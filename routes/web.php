@@ -1,12 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    echo 'hello';
-});
 
 Route::get('/email', function(){
     Mail::raw('management test message', function(Message $message){
@@ -16,4 +13,15 @@ Route::get('/email', function(){
     });
 
     echo 'email susccessfully sended!';
+});
+
+Route::get('/admin', function(){
+    $admin = User::with('detail', 'department')->find(1);
+
+    return view('admin', compact('admin'));
+});
+
+Route::middleware('auth')->group(function(){
+    Route::redirect('/', 'home');
+    Route::view('/home', 'home')->name('home');
 });
