@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
@@ -15,13 +16,11 @@ Route::get('/email', function(){
     echo 'email susccessfully sended!';
 });
 
-Route::get('/admin', function(){
-    $admin = User::with('detail', 'department')->find(1);
-
-    return view('admin', compact('admin'));
-});
-
 Route::middleware('auth')->group(function(){
     Route::redirect('/', 'home');
     Route::view('/home', 'home')->name('home');
+
+    Route::get('/user/profile', [ProfileController::class, 'index'])->name('user.profile');
+    Route::post('/user/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update-password');
+    Route::post('/user/profile/update-user-data', [ProfileController::class, 'updateUserData'])->name('user.profile.update-user-data');
 });

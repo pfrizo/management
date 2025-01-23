@@ -19,7 +19,15 @@
 
     <x-user-bar></x-user-bar>
 
-    {{ $slot }}
+    <div class="d-flex pt-2">
+
+        <x-side-bar></x-side-bar>
+
+        {{ $slot }}
+
+    </div>
+
+    
 
     <!-- resources -->
     <script src="{{ asset('assets/datatables/jquery.min.js') }}"></script>
