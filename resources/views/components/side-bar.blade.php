@@ -4,7 +4,7 @@
     @can('admin')
         <a href="#"><i class="fas fa-users me-3"></i>Colaborators</a>
         <a href="#"><i class="fas fa-user-gear me-3"></i>RH</a>
-        <a href="#"><i class="fas fa-industry me-3"></i>Departments</a>
+        <a href="{{ route('departments') }}"><i class="fas fa-industry me-3"></i>Departments</a>
     @endcan
 
     <a href="{{ route('user.profile') }}"><i class="fas fa-gear me-3"></i>User Profile</a>
