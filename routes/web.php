@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HrUserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Mail\Message;
@@ -21,15 +22,25 @@ Route::middleware('auth')->group(function(){
     Route::redirect('/', 'home');
     Route::view('/home', 'home')->name('home');
 
-    Route::get('/user/profile', [ProfileController::class, 'index'])->name('user.profile');
-    Route::post('/user/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update-password');
-    Route::post('/user/profile/update-user-data', [ProfileController::class, 'updateUserData'])->name('user.profile.update-user-data');
+    Route::prefix('/user')->group(function(){
+        Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
+        Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update-password');
+        Route::post('/profile/update-user-data', [ProfileController::class, 'updateUserData'])->name('user.profile.update-user-data');
+    });
 
-    Route::get('departments', [DepartmentController::class, 'index'])->name('departments');
-    Route::get('departments/new-department', [DepartmentController::class, 'newDepartment'])->name('departments.new-department');
-    Route::post('departments/create-department', [DepartmentController::class, 'createDepartment'])->name('departments.create-department');
-    Route::get('departments/edit-department/{id}', [DepartmentController::class, 'editDepartment'])->name('departments.edit-department');
-    Route::post('departments/edit-department', [DepartmentController::class, 'updateDepartment'])->name('departments.update-department');
-    Route::get('departments/delete-department/{id}', [DepartmentController::class, 'deleteDepartment'])->name('departments.delete-department');
-    Route::get('departments/delete-department-confirm/{id}', [DepartmentController::class, 'deleteDepartmentConfirm'])->name('departments.delete-department-confirm');
+    Route::prefix('/departments')->group(function(){
+        Route::get('/', [DepartmentController::class, 'index'])->name('departments');
+        Route::get('/new-department', [DepartmentController::class, 'newDepartment'])->name('departments.new-department');
+        Route::post('/create-department', [DepartmentController::class, 'createDepartment'])->name('departments.create-department');
+        Route::get('/edit-department/{id}', [DepartmentController::class, 'editDepartment'])->name('departments.edit-department');
+        Route::post('/edit-department', [DepartmentController::class, 'updateDepartment'])->name('departments.update-department');
+        Route::get('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment'])->name('departments.delete-department');
+        Route::get('/delete-department-confirm/{id}', [DepartmentController::class, 'deleteDepartmentConfirm'])->name('departments.delete-department-confirm');
+    });
+
+    Route::prefix('/hr')->group(function(){
+        Route::get('/', [HrUserController::class, 'index'])->name('hr-users');
+        Route::get('/new-colaborator', [HrUserController::class, 'newColaborator'])->name('hr.new-colaborator');
+        Route::post('/create-colaborator', [HrUserController::class, 'createHRColaborator'])->name('hr.create-colaborator');
+    });
 });
