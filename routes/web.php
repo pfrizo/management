@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/new-department', [DepartmentController::class, 'newDepartment'])->name('departments.new-department');
         Route::post('/create-department', [DepartmentController::class, 'createDepartment'])->name('departments.create-department');
         Route::get('/edit-department/{id}', [DepartmentController::class, 'editDepartment'])->name('departments.edit-department');
-        Route::post('/edit-department', [DepartmentController::class, 'updateDepartment'])->name('departments.update-department');
+        Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('departments.update-department');
         Route::get('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment'])->name('departments.delete-department');
         Route::get('/delete-department-confirm/{id}', [DepartmentController::class, 'deleteDepartmentConfirm'])->name('departments.delete-department-confirm');
     });
@@ -42,5 +42,9 @@ Route::middleware('auth')->group(function(){
         Route::get('/', [HrUserController::class, 'index'])->name('hr-users');
         Route::get('/new-colaborator', [HrUserController::class, 'newColaborator'])->name('hr.new-colaborator');
         Route::post('/create-colaborator', [HrUserController::class, 'createHRColaborator'])->name('hr.create-colaborator');
+        Route::get('/edit-colaborator/{id}', [HrUserController::class, 'editHRColaborator'])->name('hr.edit-colaborator');
+        Route::post('/update-colaborator', [HrUserController::class, 'updateHRColaborator'])->name('hr.update-colaborator');
+        Route::get('/delete-colaborator/{id}', [HrUserController::class, 'deleteColaborator'])->name('hr.delete-colaborator');
+        Route::get('/delete-colaborator-confirm/{id}', [HrUserController::class, 'deleteColaboratorConfirm'])->name('hr.delete-colaborator-confirm');
     });
 });

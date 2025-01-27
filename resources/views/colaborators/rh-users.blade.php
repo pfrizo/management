@@ -16,11 +16,14 @@
                 <a href="{{ route('hr.new-colaborator') }}" class="btn btn-primary">Create a new colaborator</a>
             </div>
         
-            <table class="table w-50" id="table">
+            <table class="table" id="table">
                 <thead class="table-dark">
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Permissions</th>
+                    <th>Role</th>
+                    <th>Salary</th>
+                    <th>Admission Date</th>
+                    <th>City</th>
                     <th></th>
                 </thead>
                 <tbody>
@@ -29,17 +32,16 @@
                         <tr>
                             <td>{{ $colaborator->name }}</td>
                             <td>{{ $colaborator->email }}</td>
+                            <td>{{ $colaborator->role }}</td>
 
-                            @php
-                                $permissions = json_decode($colaborator->permissions);
-                            @endphp
+                            <td>${{ $colaborator->detail->salary }}</td>
 
-                            <td>{{ implode(',', $permissions) }}</td>
-                                                        
+                            <td>{{ $colaborator->detail->admission_date }}</td>
+                            <td>{{ $colaborator->detail->city }}</td>                                                     
                             <td>
                                 <div class="d-flex gap-3 justify-content-end">
-                                    <a href="{{ route('departments.edit-department', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark"><i class="fa-regular fa-pen-to-square me-2"></i>Edit</a>
-                                    <a href="{{ route('departments.delete-department', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark"><i class="fa-regular fa-trash-can me-2"></i>Delete</a>
+                                    <a href="{{ route('hr.edit-colaborator', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fa-regular fa-pen-to-square me-2"></i>Edit</a>
+                                    <a href="{{ route('hr.delete-colaborator', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fa-regular fa-trash-can me-2"></i>Delete</a>
                                 </div>
                             </td>
                         </tr>

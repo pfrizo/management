@@ -46,7 +46,7 @@ class DepartmentController extends Controller
 
         $id = decrypt($id);
 
-        if(intval($id === 1)){
+        if($this->isDepartmentBlocked($id)){
             return redirect()->route('departments');
         }
 
@@ -66,7 +66,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|max:50|unique:departments,name,' . $id
         ]);
 
-        if(intval($id === 1)){
+        if($this->isDepartmentBlocked($id)){
             return redirect()->route('departments');
         }
 
@@ -83,7 +83,7 @@ class DepartmentController extends Controller
 
         $id = decrypt($id);
 
-        if(intval($id === 1)){
+        if($this->isDepartmentBlocked($id)){
             return redirect()->route('departments');
         }
 
@@ -97,7 +97,7 @@ class DepartmentController extends Controller
 
         $id = decrypt($id);
 
-        if(intval($id === 1)){
+        if($this->isDepartmentBlocked($id)){
             return redirect()->route('departments');
         }
 
@@ -105,5 +105,9 @@ class DepartmentController extends Controller
         $department->delete();
 
         return redirect()->route('departments');
+    }
+
+    private function isDepartmentBlocked($id){
+        return in_array(intval($id), [1, 2]);
     }
 }
