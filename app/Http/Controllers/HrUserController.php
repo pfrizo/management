@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ConfirmAccountEmail;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 
@@ -51,9 +54,12 @@ class HrUserController extends Controller
             return redirect()->route('home');
         }
 
+        $token = Str::random(60);
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->confirmation_token = $token;
         $user->role = 'hr';
         $user->department_id = $request->select_department;
         $user->permissions = '["hr"]';
@@ -67,6 +73,8 @@ class HrUserController extends Controller
             'salary' => $request->salary,
             'admission_date' => $request->admission_date
         ]);
+
+        Mail::to($user->email)->send(new ConfirmAccountEmail(route('confirm-account', $token)));
 
         return redirect()->route('hr-users')->with('success', 'Colaborator created successfully!');
     }
