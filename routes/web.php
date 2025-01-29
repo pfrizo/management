@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ColaboratorController;
 use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HRManagementController;
 use App\Http\Controllers\HrUserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -22,7 +24,17 @@ Route::get('/email', function(){
 
 Route::middleware('auth')->group(function(){
     Route::redirect('/', 'home');
-    Route::view('/home', 'home')->name('home');
+    Route::get('/home', function(){
+        if(auth()->user()->role === 'admin'){
+            return redirect()->route('admin.home');
+        } elseif (auth()->user()->role === 'hr'){
+            return redirect()->route('hr.management');
+        } else {
+            die('colaborator home page');
+        }
+    })->name('home');
+
+    Route::get('/admin/home', [AdminController::class, 'home'])->name('admin.home');
 
     Route::prefix('/user')->group(function(){
         Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
@@ -49,6 +61,12 @@ Route::middleware('auth')->group(function(){
         Route::get('/delete-colaborator/{id}', [HrUserController::class, 'deleteHRColaborator'])->name('hr.delete-colaborator');
         Route::get('/delete-colaborator-confirm/{id}', [HrUserController::class, 'deleteHRColaboratorConfirm'])->name('hr.delete-colaborator-confirm');
         Route::get('/restore/{id}', [HrUserController::class, 'restoreHRColaborator'])->name('hr.restore');
+
+        Route::prefix('/management')->group(function(){
+            Route::get('/', [HRManagementController::class, 'home'])->name('hr.management');
+            Route::get('/new-colaborator', [HRManagementController::class, 'newColaborator'])->name('hr.management.new-colaborator');
+            Route::post('/create-colaborator', [HRManagementController::class, 'createColaborator'])->name('hr.management.create-colaborator');
+        });
     });
 
     Route::prefix('/colaborators')->group(function(){
