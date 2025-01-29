@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ColaboratorController;
 use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HrUserController;
@@ -45,8 +46,17 @@ Route::middleware('auth')->group(function(){
         Route::post('/create-colaborator', [HrUserController::class, 'createHRColaborator'])->name('hr.create-colaborator');
         Route::get('/edit-colaborator/{id}', [HrUserController::class, 'editHRColaborator'])->name('hr.edit-colaborator');
         Route::post('/update-colaborator', [HrUserController::class, 'updateHRColaborator'])->name('hr.update-colaborator');
-        Route::get('/delete-colaborator/{id}', [HrUserController::class, 'deleteColaborator'])->name('hr.delete-colaborator');
-        Route::get('/delete-colaborator-confirm/{id}', [HrUserController::class, 'deleteColaboratorConfirm'])->name('hr.delete-colaborator-confirm');
+        Route::get('/delete-colaborator/{id}', [HrUserController::class, 'deleteHRColaborator'])->name('hr.delete-colaborator');
+        Route::get('/delete-colaborator-confirm/{id}', [HrUserController::class, 'deleteHRColaboratorConfirm'])->name('hr.delete-colaborator-confirm');
+        Route::get('/restore/{id}', [HrUserController::class, 'restoreHRColaborator'])->name('hr.restore');
+    });
+
+    Route::prefix('/colaborators')->group(function(){
+        Route::get('/', [ColaboratorController::class, 'index'])->name('colaborators');
+        Route::get('/details/{id}', [ColaboratorController::class, 'showDetails'])->name('colaborators.details');
+        Route::get('/delete/{id}', [ColaboratorController::class, 'deleteColaborator'])->name('colaborators.delete');
+        Route::get('/delete-confirm/{id}', [ColaboratorController::class, 'deleteColaboratorConfirm'])->name('colaborators.delete-confirm');
+        Route::get('/restore/{id}', [ColaboratorController::class, 'restoreColaborator'])->name('colaborators.restore');
     });
 });
 

@@ -19,7 +19,8 @@ class HrUserController extends Controller
         Auth::user()->can('admin') ?: abort(403, 'You are not authorized to access this page.');
 
         //$colaborators = User::where('role', 'hr')->get();
-        $colaborators = User::with('detail')
+        $colaborators = User::withTrashed()
+                            ->with('detail')
                             ->where('role', 'hr')
                             ->get();
 
@@ -110,7 +111,7 @@ class HrUserController extends Controller
         return Redirect()->route('hr-users')->with('success', 'Colaborator updated successfully');
     }
 
-    public function deleteColaborator($id){
+    public function deleteHRColaborator($id){
         Auth::user()->can('admin') ?: abort(403, 'You are not authorized to access this page.');
 
         $id = decrypt($id);
@@ -120,7 +121,7 @@ class HrUserController extends Controller
         return view('colaborators.delete-hr-user', compact('colaborator'));
     }
 
-    public function deleteColaboratorConfirm($id){
+    public function deleteHRColaboratorConfirm($id){
         Auth::user()->can('admin') ?: abort(403, 'You are not authorized to access this page.');
 
         $id = decrypt($id);
@@ -129,5 +130,14 @@ class HrUserController extends Controller
         $colaborator->delete();
 
         return Redirect()->route('hr-users')->with('success', 'Colaborator deleted successfully');
+    }
+
+    public function restoreHRColaborator($id){
+        Auth::user()->can('admin') ?: abort(403, 'You are not authorized to access this page.');
+
+        $colaborator = User::withTrashed()->where('role', 'hr')->findOrFail($id);
+        $colaborator->restore();
+
+        return redirect()->route('hr-users');
     }
 }

@@ -1,21 +1,16 @@
-<x-layout-app page-title="Human Resources">
+<x-layout-app page-title="Colaborators">
 
     <div class="w-100 p-4">
 
-        <h3>Human Resources Colaborators</h3>
-    
+        <h3>All colaborators</h3>
+
         <hr>
 
         @if($colaborators->count() === 0)
             <div class="text-center my-5">
-                <p>No colaborators found.</p>
-                <a href="{{ route('hr.new-colaborator') }}" class="btn btn-primary">Create a new colaborator</a>
+                <p>No colaborators found.</p><span class="badge bg-danger">No</span>
             </div>
         @else
-            <div class="mb-3">
-                <a href="{{ route('hr.new-colaborator') }}" class="btn btn-primary">Create a new colaborator</a>
-            </div>
-        
             <table class="table" id="table">
                 <thead class="table-dark">
                     <th>Name</th>
@@ -49,12 +44,11 @@
                             <td>
                                 <div class="d-flex gap-3 justify-content-end">
                                     @empty($colaborator->deleted_at)
-                                        <a href="{{ route('hr.edit-colaborator', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-pen-to-square me-2"></i>Edit</a>    
-                                        <a href="{{ route('hr.delete-colaborator', ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-trash-can me-2"></i>Delete</a>
+                                        <a href="{{ route('colaborators.details', ['id' => $colaborator->id]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-eye me-2"></i>Details</a>
+                                        <a href="{{ route('colaborators.delete', ['id' => $colaborator->id]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-trash-arrow-up me-2"></i>Delete</a>
                                     @else
-                                        <a href="{{ route('hr.restore', ['id' => $colaborator->id]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-trash-arrow-up me-2"></i>Restore</a>  
+                                        <a href="{{ route('colaborators.restore', ['id' => $colaborator->id]) }}" class="btn btn-sm btn-outline-dark ms-3"><i class="fas fa-trash-arrow-up me-2"></i>Restore</a>
                                     @endif
-                                    
                                 </div>
                             </td>
                         </tr>
@@ -64,8 +58,5 @@
                 </tbody>
             </table>
         @endif
-    
-    </div>
-
 
 </x-layout-app>
