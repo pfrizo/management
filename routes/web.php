@@ -30,16 +30,19 @@ Route::middleware('auth')->group(function(){
         } elseif (auth()->user()->role === 'hr'){
             return redirect()->route('hr.management');
         } else {
-            die('colaborator home page');
+            return redirect()->route('colaborator.home');
         }
     })->name('home');
 
     Route::get('/admin/home', [AdminController::class, 'home'])->name('admin.home');
 
+    Route::get('/colaborator', [ColaboratorController::class, 'home'])->name('colaborator.home');
+
     Route::prefix('/user')->group(function(){
         Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
         Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update-password');
         Route::post('/profile/update-user-data', [ProfileController::class, 'updateUserData'])->name('user.profile.update-user-data');
+        Route::post('/profile/update-user-address', [ProfileController::class, 'updateUserAddress'])->name('user.profile.update-user-address');
     });
 
     Route::prefix('/departments')->group(function(){
@@ -66,6 +69,12 @@ Route::middleware('auth')->group(function(){
             Route::get('/', [HRManagementController::class, 'home'])->name('hr.management');
             Route::get('/new-colaborator', [HRManagementController::class, 'newColaborator'])->name('hr.management.new-colaborator');
             Route::post('/create-colaborator', [HRManagementController::class, 'createColaborator'])->name('hr.management.create-colaborator');
+            Route::get('/edit-colaborator/{id}', [HRManagementController::class, 'editColaborator'])->name('hr.management.edit-colaborator');
+            Route::post('/update-colaborator', [HRManagementController::class, 'updateColaborator'])->name('hr.management.update-colaborator');
+            Route::get('/details/{id}', [HRManagementController::class, 'showDetails'])->name('hr.management.details');
+            Route::get('/delete/{id}', [HRManagementController::class, 'deleteColaborator'])->name('hr.management.delete-colaborator');
+            Route::get('/delete-confirm/{id}', [HRManagementController::class, 'deleteColaboratorConfirm'])->name('hr.management.delete-colaborator-confirm');
+            Route::get('/restore/{id}', [HRManagementController::class, 'restoreColaborator'])->name('hr.management.restore-colaborator');
         });
     });
 

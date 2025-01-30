@@ -27,7 +27,7 @@
                         @endforeach
                     </ul>
 
-                    <p>Department: <strong>{{ $colaborator->department->name }}</strong></p>
+                    <p>Department: <strong>{{ $colaborator->department->name ?? "-" }}</strong></p>
                     <p>Active: 
                         @empty($colaborator->email_verified_at)
                             <span class="badge bg-danger">No</span>
@@ -48,7 +48,9 @@
             </div>
         </div>
 
-        <button class="btn btn-outline-dark" onclick="window.history.back()"><i class="fas fa-arrow-left me-2"></i>Back</button>
+        @cannot('colaborator')
+            <button class="btn btn-outline-dark" onclick="window.history.back()"><i class="fas fa-arrow-left me-2"></i>Back</button>
+        @endcannot
 
     </div>
 
